@@ -26,16 +26,31 @@ public class KafkaSchemaSerializer extends BeanSerializer {
 
     private void writeSchema(JsonGenerator gen) throws IOException {
         gen.writeStringField("type", "struct");
+        gen.writeBooleanField("optional", false);
         gen.writeArrayFieldStart("fields");
 
-        Iterable<PropertyWriter> propertyWriters = this::properties;
-
-        for (PropertyWriter propertyWriter: propertyWriters) {
+        for (PropertyWriter propertyWriter : (Iterable<PropertyWriter>) this::properties) {
             gen.writeStartObject();
             gen.writeStringField("field", propertyWriter.getName());
+            writeType(gen, propertyWriter.getType().getRawClass().getName());
             gen.writeEndObject();
         }
 
         gen.writeEndArray();
+    }
+
+    private void writeType(JsonGenerator gen, String name) throws IOException {
+        switch (name) {
+            case "int":
+                gen.writeStringField("type", "int32");
+                break;
+            case "java.lang.String":
+                gen.writeStringField("type", "string");
+                break;
+            case "java.sql.Timestamp":
+                gen.writeStringField("type", "int64");
+                gen.writeStringField("name", "org.apache.kafka.connect.data.Timestamp");
+                gen.writeNumberField("version", 1);
+        }
     }
 }
