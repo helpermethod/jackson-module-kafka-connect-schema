@@ -1,8 +1,8 @@
-package com.github.helpermethod.jackson.module.kafka_schema;
+package com.github.helpermethod.jackson.module.kafka.connect.schema;
 
 import java.sql.Timestamp;
 
-@KafkaConnectSchema
+@EmbeddedSchema
 public class Movie {
     private final String title;
     private final int year;

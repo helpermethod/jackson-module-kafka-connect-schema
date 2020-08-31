@@ -1,4 +1,4 @@
-package com.github.helpermethod.jackson.module.kafka_schema;
+package com.github.helpermethod.jackson.module.kafka.connect.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,18 +10,17 @@ import org.junit.jupiter.api.Test;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.TimeZone;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
-class KafkaConnectSchemaSerializerTests {
+class EmbeddedSchemaSerializerTests {
     @Test
     void should_create_payload_and_schema_properties() throws JsonProcessingException {
         ObjectMapper mapper =
             new ObjectMapper()
                 .registerModule(new ParameterNamesModule())
-                .registerModule(new KafkaSchemaModule());
+                .registerModule(new EmbeddedSchemaModule());
 
         String expected = "{ schema: { type: 'struct', optional: false, fields: [{ field: 'title', type: 'string' }, { field: 'year', type: 'int32'}, { field: 'released', type: 'int64', name: 'org.apache.kafka.connect.data.Timestamp', version: 1 } ] }, payload: { title: 'Army of Darkness', year: 1992, released: 730108800000 } }";
 

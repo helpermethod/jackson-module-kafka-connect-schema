@@ -1,4 +1,4 @@
-package com.github.helpermethod.jackson.module.kafka_schema;
+package com.github.helpermethod.jackson.module.kafka.connect.schema;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface KafkaConnectSchema {
+public @interface EmbeddedSchema {
 }
