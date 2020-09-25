@@ -7,9 +7,19 @@ import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-public class EmbeddedSchemaSerializer extends BeanSerializer {
-    protected EmbeddedSchemaSerializer(BeanSerializerBase src) {
+public class EmbeddedJsonSchemaSerializer extends BeanSerializer {
+    private static final HashMap<Class<?>, Function<String, Map<String, Object>>> schemaForType = new HashMap<>();
+
+    static {
+        schemaForType.put(Integer.class, CoreTypes::getSchemaForInteger);
+        schemaForType.put(String.class, CoreTypes::getSchemaForString);
+    }
+
+    protected EmbeddedJsonSchemaSerializer(BeanSerializerBase src) {
         super(src);
     }
 
@@ -29,8 +39,8 @@ public class EmbeddedSchemaSerializer extends BeanSerializer {
         gen.writeBooleanField("optional", false);
         gen.writeArrayFieldStart("fields");
 
-        for (PropertyWriter property : (Iterable<PropertyWriter>)this::properties) {
-            gen.writeObject(Schema.create(property.getName(), property.getType().getRawClass().getName()));
+        for (PropertyWriter property : (Iterable<PropertyWriter>) this::properties) {
+            gen.writeObject(schemaForType.get(property.getType().getRawClass()).apply(property.getName()));
         }
 
         gen.writeEndArray();

@@ -1,28 +1,20 @@
 package com.github.helpermethod.jackson.module.kafka.connect.schema;
 
-import java.sql.Timestamp;
-
-@EmbeddedSchema
+@EmbeddedJsonSchema
 public class Movie {
     private final String title;
-    private final int year;
-    private final Timestamp released;
+    private final Integer year;
 
-    public Movie(String title, int year, Timestamp released) {
+    public Movie(String title, Integer year) {
         this.title = title;
         this.year = year;
-        this.released = released;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
-    }
-
-    public Timestamp getReleased() {
-        return released;
     }
 }

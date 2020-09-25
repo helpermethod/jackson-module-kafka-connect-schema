@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
 
-public class EmbeddedSerializerModifier extends BeanSerializerModifier {
+public class EmbeddedJsonSerializerModifier extends BeanSerializerModifier {
     @Override
     public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
-        if (beanDesc.getBeanClass().isAnnotationPresent(EmbeddedSchema.class) && serializer instanceof BeanSerializerBase) {
-            return new EmbeddedSchemaSerializer((BeanSerializerBase) serializer);
+        if (beanDesc.getBeanClass().isAnnotationPresent(EmbeddedJsonSchema.class) && serializer instanceof BeanSerializerBase) {
+            return new EmbeddedJsonSchemaSerializer((BeanSerializerBase) serializer);
         }
 
         return super.modifySerializer(config, beanDesc, serializer);
